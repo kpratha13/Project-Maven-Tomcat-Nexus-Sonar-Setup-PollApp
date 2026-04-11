@@ -1,38 +1,124 @@
-Sonarqube : Code quality and check tool > 9000
+🚀 PollApp: Real-Time DevOps Voting Application
+PollApp is a Java-based web application designed to demonstrate a complete DevOps lifecycle. It features real-time poll updates using AJAX and is integrated with SonarQube for code quality and Nexus for artifact management.
 
-Nexus: Artifactory tool > 8081
+🛠 Project Stack
+Java 17 (Amazon Corretto)
 
-Jenkins : CI/CD > 8080
+Apache Tomcat 10.1 (Servlet Container)
 
-Tomcat : 8080
+Maven (Build Tool)
 
-mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=f5782cfeafd95d3216f992b6c35bbdfe5fd67ac3
+SonarQube (Static Code Analysis)
 
-Nexus:
+Nexus Repository Manager (Artifact Storage)
 
-vi /etc/maven/settings.xml
+Docker (Containerization for Tools)
 
-    <server>
-    
-      <id>deploymentRepo</id>
-      
-      <username>admin</username>
-      
-      <password>1d7edc68-4300-43d0-b648-assc7d4c7049fd</password>
-      
-    </server>
+1. Environment Setup (Amazon Linux)
+Java Installation
+Bash
 
-mvn clean deploy
+sudo dnf update -y
+sudo dnf install java-17-amazon-corretto-devel -y
+Resource Optimization (Critical for 1GB RAM Servers)
+Since we are running Tomcat, SonarQube, and Nexus on a single t2.micro, we must enable Swap space:
 
+Bash
 
-apt install docker.io -y
+sudo dd if=/dev/zero of=/swapfile bs=128M count=16
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+2. Apache Tomcat 10 Setup
+Tomcat 10 is used to host our .war file.
 
-systemctl start docker
+Installation:
 
-docker run -d --name tomcat -p 8090:8080 consol/tomcat-7.0
+Bash
 
-docker cp target/java-tomcat-maven-example.war tomcat:/opt/tomcat/webapps/
+sudo groupadd tomcat
+sudo useradd -g tomcat -d /opt/tomcat tomcat
+cd /tmp
+wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.18/bin/apache-tomcat-10.1.18.tar.gz
+sudo mkdir /opt/tomcat
+sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
+Configuration:
 
+Set permissions for the tomcat user.
 
+Configure tomcat-users.xml for Manager GUI access.
 
-tomcat username & password is admin / admin
+Comment out the RemoteAddrValve in context.xml to allow external access to the Manager App.
+
+Service Management:
+
+Bash
+
+sudo systemctl start tomcat
+sudo systemctl enable tomcat
+3. SonarQube: Code Quality
+SonarQube is deployed via Docker to analyze code for bugs and vulnerabilities.
+
+Deployment:
+
+Bash
+
+sudo sysctl -w vm.max_map_count=262144
+sudo docker run -d --name sonarqube -p 9000:9000 sonarqube:lts-community
+Analysis Command:
+Use the following Maven command to push reports to SonarQube:
+
+Bash
+
+export MAVEN_OPTS="-Xmx256m"
+mvn sonar:sonar \
+  -Dsonar.projectKey=PollApp \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.login=your_generated_token
+4. Nexus: Artifact Management
+Nexus acts as our Artifactory to store versioned build artifacts.
+
+Deployment:
+
+Bash
+
+sudo docker run -d -p 8081:8081 --name nexus sonatype/nexus3
+Authentication:
+Retrieve the initial admin password:
+
+Bash
+
+sudo docker exec -it nexus cat /nexus-data/admin.password
+Maven Integration:
+Add Nexus credentials to ~/.m2/settings.xml:
+
+XML
+
+<servers>
+  <server>
+    <id>nexus-snapshots</id>
+    <username>admin</username>
+    <password>your_password</password>
+  </server>
+</servers>
+Deployment Command:
+
+Bash
+
+mvn clean deploy -DskipTests
+📂 Project Structure
+src/main/java: Contains PollServlet.java (Logic) and ResultsServlet.java (Data API).
+
+src/main/webapp: Contains index.jsp with AJAX polling script.
+
+src/test/java: Contains PollTest.java for JUnit 5 unit testing.
+
+🚦 How to Run
+Build & Test: mvn clean verify
+
+Analyze: mvn sonar:sonar
+
+Upload: mvn deploy
+
+Access: Open http://<EC2-IP>:8080/PollApp in your browser.

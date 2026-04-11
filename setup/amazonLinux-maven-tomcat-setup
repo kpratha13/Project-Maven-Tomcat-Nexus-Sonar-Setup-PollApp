@@ -1,48 +1,74 @@
-If it is amazon linux 2  : 
+tomcat : Servlet container used for java web application
 
-sudo amazon-linux-extras install java-openjdk11
 
-yum install git tree maven git -y
+8080  
 
-git clone https://github.com/knowledgemateit/Maven-Tomcat-Nexus-Sonar-Setup.git
-cd Maven-Tomcat-Nexus-Sonar-Setup/	 
-mvn package
+# Update the system
+sudo dnf update -y
 
-# Tomcat
-cd /opt/
-mkdir /opt/tomcat
-wget https://downloads.apache.org/tomcat/tomcat-10/v10.1.33/bin/apache-tomcat-10.1.31.tar.gz
-sudo tar xzf apache-tomcat-10.1.33.tar.gz -C /opt/tomcat --strip-components=1 
+# Install Amazon Corretto 17 (recommended for Tomcat 10/11)
+sudo dnf install java-17-amazon-corretto-devel -y
+
+
+# Create a group and user named 'tomcat'
 sudo groupadd tomcat
-sudo useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
-sudo chown -R tomcat: /opt/tomcat
-sudo sh -c 'chmod +x /opt/tomcat/bin/*.sh' 
+sudo useradd -g tomcat -d /opt/tomcat tomcat
 
 
-#tomcat
-vi /opt/tomcat/conf/tomcat-users.xml
+cd /tmp
+wget https://archive.apache.org/dist/tomcat/tomcat-10/v10.1.18/bin/apache-tomcat-10.1.18.tar.gz
+
+sudo mkdir /opt/tomcat
+sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
+
+cd /opt/tomcat
+sudo chgrp -R tomcat /opt/tomcat
+sudo chmod -R g+r conf
+sudo chmod g+x conf
+sudo chown -R tomcat webapps/ work/ temp/ logs/
+
+sudo vi /etc/systemd/system/tomcat.service
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=network.target
+
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+
+Environment="JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto"
+Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_BASE=/opt/tomcat"
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
 
 
-		<!-- user manager can access only the manager section -->
-		<role rolename="manager-gui" />
-		<user username="manager" password="admin" roles="manager-gui" />
-
-		<!-- user admin can access manager and admin section both -->
-		<role rolename="admin-gui" />
-		<user username="admin" password="admin" roles="manager-gui,admin-gui" />
+sudo systemctl daemon-reload
+sudo systemctl enable tomcat  
+sudo systemctl start tomcat
 
 
- vi /opt/tomcat/webapps/manager/META-INF/context.xml
+sudo vi /opt/tomcat/conf/tomcat-users.xml
 
-		  <!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
-				 allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
-		  ...
-		</Context>
+<role rolename="manager-gui"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="admin123" roles="manager-gui,admin-gui"/>
 
-sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+sudo vi /opt/tomcat/webapps/manager/META-INF/context.xml
+sudo vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
 
-cd /opt/tomcat/bin/
+  <!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+  allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
 
-./startup.sh
+
+sudo systemctl restart tomcat
 
 cp /opt/Maven-Tomcat-Nexus-Sonar-Setup/target/java-tomcat-maven-example.war /opt/tomcat/webapps/

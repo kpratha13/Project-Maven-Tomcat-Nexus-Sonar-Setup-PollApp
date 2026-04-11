@@ -128,4 +128,34 @@ export MAVEN_OPTS="-Xmx256m"
   -Dsonar.projectKey=PollApp \
   -Dsonar.host.url=http://localhost:9000 \
   -Dsonar.login=squ_da7bb4dc6f06881f9e6ebd8055541f3f3492ec2a
-  
+
+
+Nexus: Artifactory
+
+8081
+
+
+# Run Nexus Container
+sudo docker run -d -p 8081:8081 --name nexus sonatype/nexus3
+
+sudo docker exec -it nexus cat /nexus-data/admin.password
+
+9b3aa145-efca-439d-a080-53e3d8280d4d
+
+admin123
+
+cd /etc/maven/settings.xml
+
+<settings>
+  <servers>
+    <server>
+      <id>nexus-snapshots</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
+  </servers>
+</settings>
+
+
+export MAVEN_OPTS="-Xmx256m"
+mvn clean deploy -DskipTests

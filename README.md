@@ -80,7 +80,7 @@ sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
   
   ```bash
    cd /opt/tomcat
-   sudo chrgrp -R tomcat /opt/tomcat
+   sudo chgrp -R tomcat /opt/tomcat
    sudo chmod -R g+r conf
    sudo chmod g+x conf
    sudo chown -R tomcat webapps/ work/ temp/ logs/

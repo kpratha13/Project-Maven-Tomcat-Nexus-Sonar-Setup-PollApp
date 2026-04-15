@@ -85,6 +85,30 @@ sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
    sudo chmod g+x conf
    sudo chown -R tomcat webapps/ work/ temp/ logs/
   ```
+- Systemd Service File for Apache Tomcat
+   ```bash 
+   sudo vi /etc/systemd/system/tomcat.service
+    [Unit]
+    Description=Apache Tomcat Web Application Container
+    After=network.target
+
+   [Service]
+   Type=forking
+
+   User=tomcat
+   Group=tomcat
+
+   Environment="JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto"
+   Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+   Environment="CATALINA_HOME=/opt/tomcat"
+   Environment="CATALINA_BASE=/opt/tomcat"
+
+   ExecStart=/opt/tomcat/bin/startup.sh
+   ExecStop=/opt/tomcat/bin/shutdown.sh
+
+   [Install]
+   WantedBy=multi-user.target
+  ```
 
 - Configure `tomcat-users.xml` with Manager GUI credentials.
 - Comment out `RemoteAddrValve` in `context.xml` to allow external access to the Manager App.

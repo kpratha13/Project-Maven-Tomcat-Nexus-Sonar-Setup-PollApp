@@ -122,6 +122,18 @@ sudo systemctl start tomcat
 sudo systemctl status tomcat
 ```
 
+-Set a username and password
+```bash
+sudo vi /opt/tomcat/conf/tomcat-users.xml
+
+<role rolename="manager-gui"/>
+<role rolename="admin-gui"/>
+<user username="admin" password="your_password" roles="manager-gui,admin-gui"/>
+
+sudo vi /opt/tomcat/webapps/manager/META-INF/context.xml
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+  allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> --> [we have to comment this]
+
 ---
 
 ## 🔍 SonarQube: Code Quality Analysis

@@ -117,8 +117,9 @@ sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl start tomcat
 sudo systemctl enable tomcat
+sudo systemctl start tomcat
+sudo systemctl status tomcat
 ```
 
 ---

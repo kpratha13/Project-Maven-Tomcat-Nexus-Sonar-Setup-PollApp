@@ -88,9 +88,9 @@ sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
 - Systemd Service File for Apache Tomcat
    ```bash 
    sudo vi /etc/systemd/system/tomcat.service
-    [Unit]
-    Description=Apache Tomcat Web Application Container
-    After=network.target
+   [Unit]
+   Description=Apache Tomcat Web Application Container
+   After=network.target
 
    [Service]
    Type=forking

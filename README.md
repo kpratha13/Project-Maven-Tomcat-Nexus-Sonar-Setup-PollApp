@@ -134,6 +134,11 @@ sudo vi /opt/tomcat/webapps/manager/META-INF/context.xml
 <!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
   allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> --> [we have to comment this]
 
+
+sudo vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
+<!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+          allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> --> [we have to comment this]
+
 ---
 
 ## 🔍 SonarQube: Code Quality Analysis

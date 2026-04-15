@@ -77,11 +77,14 @@ sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
 ### Configuration
 
 - Set file permissions for the `tomcat` user.
-  sudo chrgrp -R tomcat /opt/tomcat
-  sudo chmod -R g+r conf
-  sudo chmod g+x conf
-  sudo chown -R tomcat webapps/ work/ temp/ logs/
   
+  ```bash
+   sudo chrgrp -R tomcat /opt/tomcat
+   sudo chmod -R g+r conf
+   sudo chmod g+x conf
+   sudo chown -R tomcat webapps/ work/ temp/ logs/S
+  ```
+
 - Configure `tomcat-users.xml` with Manager GUI credentials.
 - Comment out `RemoteAddrValve` in `context.xml` to allow external access to the Manager App.
 

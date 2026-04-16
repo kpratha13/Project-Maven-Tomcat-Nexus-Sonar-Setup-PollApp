@@ -16,6 +16,8 @@
         <form action="submit-vote" method="post" target="voter_frame">
             <button name="option" value="Docker">Docker</button>
             <button name="option" value="Kubernetes">Kubernetes</button>
+            <button name="option" value="Terraform">Terraform</button>
+            <button name="option" value="Jenkins">Jenkins</button>
         </form>
         <iframe name="voter_frame" style="display:none;"></iframe>
         <hr>

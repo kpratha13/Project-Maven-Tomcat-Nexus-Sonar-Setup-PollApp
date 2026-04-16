@@ -148,6 +148,8 @@ yum intsall tree maven -y
 cp /opt/Project-Maven-Tomcat-Nexus-Sonar-Setup-PollApp/target/PollApp.war /opt/tomcat/webapps/
 ls /opt/tomcat/webapps/
 
+cp -r /opt/Project-Maven-Tomcat-Nexus-Sonar-Setup-PollApp/target/PollApp.war /opt/tomcat/webapps/  [when we change in code then copy it in web]
+
 
 ---
 

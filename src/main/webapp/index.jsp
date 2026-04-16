@@ -18,6 +18,7 @@
             <button name="option" value="Kubernetes">Kubernetes</button>
             <button name="option" value="Terraform">Terraform</button>
             <button name="option" value="Ansible">Ansible</button>
+            <button name="option" value="AWS">Ansible</button>
         </form>
         <iframe name="voter_frame" style="display:none;"></iframe>
         <hr>

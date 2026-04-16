@@ -191,11 +191,11 @@ Access the dashboard at: `http://<EC2-IP>:9000`
 ### Running Analysis
 
 ```bash
-export MAVEN_OPTS="-Xmx256m"
-mvn sonar:sonar \
-  -Dsonar.projectKey=PollApp \
+mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=poll-application \
+  -Dsonar.projectname='poll-application' \
   -Dsonar.host.url=http://localhost:9000 \
-  -Dsonar.login=your_generated_token
+  -Dsonar.token=squ_b4cce9e7ceead05b6b30efb94b848e77848eb190
 ```
 
 > 💡 Generate your token from **SonarQube → My Account → Security**.

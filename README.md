@@ -164,8 +164,25 @@ SonarQube is deployed via Docker and analyzes code for bugs, vulnerabilities, an
 ### Deployment
 
 ```bash
-sudo sysctl -w vm.max_map_count=262144
+
+SonarQube:
+
+[here below command install docker and create image related to sonarqube]
+
+sudo dnf install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+
 sudo docker run -d --name sonarqube -p 9000:9000 sonarqube:lts-community
+
+sudo dd if=/dev/zero of=/swapfile bs=128M count=16
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
+free -h
+sudo sysctl -w vm.max_map_count=262144
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
 ```
 
 Access the dashboard at: `http://<EC2-IP>:9000`

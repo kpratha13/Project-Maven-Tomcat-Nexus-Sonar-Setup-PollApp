@@ -175,6 +175,7 @@ sudo systemctl enable docker
 
 sudo docker run -d --name sonarqube -p 9000:9000 sonarqube:lts-community
 
+## add swap memory and adjust a kernel setting.
 sudo dd if=/dev/zero of=/swapfile bs=128M count=16
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile

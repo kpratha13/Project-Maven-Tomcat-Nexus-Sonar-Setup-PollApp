@@ -139,6 +139,16 @@ sudo vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
 <!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
           allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> --> [we have to comment this]
 
+
+cd /opt/  [to  maintain your untrack files]
+git clone "your project"
+cd "select your project (Project-Maven-Tomcat-Nexus-Sonar-Setup-PollApp)"
+yum intsall tree maven -y
+
+cp /opt/Project-Maven-Tomcat-Nexus-Sonar-Setup-PollApp/target/PollApp.war /opt/tomcat/webapps/
+ls /opt/tomcat/webapps/
+
+
 ---
 
 ## 🔍 SonarQube: Code Quality Analysis

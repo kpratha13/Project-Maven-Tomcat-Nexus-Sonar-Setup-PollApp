@@ -150,6 +150,10 @@ ls /opt/tomcat/webapps/
 
 cp -r /opt/Project-Maven-Tomcat-Nexus-Sonar-Setup-PollApp/target/PollApp.war /opt/tomcat/webapps/  [when we change in code then copy it in web]
 
+URL:-
+http://100.54.148.30:8080/PollApp/index.jsp
+http://100.54.148.30:8080/
+
 
 ---
 

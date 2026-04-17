@@ -173,6 +173,8 @@ sudo dnf install docker -y
 sudo systemctl start docker
 sudo systemctl enable docker
 
+docker start "container id"
+
 sudo docker run -d --name sonarqube -p 9000:9000 sonarqube:lts-community
 
 ## add swap memory and adjust a kernel setting.

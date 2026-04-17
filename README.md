@@ -108,6 +108,8 @@ sudo tar -xf apache-tomcat-10.1.18.tar.gz -C /opt/tomcat --strip-components=1
 
    [Install]
    WantedBy=multi-user.target
+
+   systemctl status tomcat [to see tomcat status]
   ```
 
 - Configure `tomcat-users.xml` with Manager GUI credentials.
@@ -221,6 +223,7 @@ sudo docker run -d -p 8081:8081 --name nexus sonatype/nexus3
 ```
 
 Access the dashboard at: `http://<EC2-IP>:8081`
+sudo docker logs -f nexus [to see the logs]
 
 ### Retrieve Initial Admin Password
 
@@ -229,17 +232,23 @@ sudo docker exec -it nexus cat /nexus-data/admin.password
 ```
 
 ### Maven Integration
+go-cd /opt/
+ls
+cd /etc/maven/
 
-Add Nexus credentials to `~/.m2/settings.xml`:
+Add Nexus credentials :- vi settings.xml
 
 ```xml
 <servers>
   <server>
     <id>nexus-snapshots</id>
     <username>admin</username>
-    <password>your_password</password>
+    <password>admin123</password>
   </server>
 </servers>
+
+<img width="590" height="202" alt="image" src="https://github.com/user-attachments/assets/f60b4613-c8fb-412d-a95b-1bc0555643bd" />
+
 ```
 
 ### Deploy Artifact to Nexus

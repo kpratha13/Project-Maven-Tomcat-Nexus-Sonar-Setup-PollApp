@@ -247,8 +247,6 @@ Add Nexus credentials :- vi settings.xml
   </server>
 </servers>
 
-<img width="590" height="202" alt="image" src="https://github.com/user-attachments/assets/f60b4613-c8fb-412d-a95b-1bc0555643bd" />
-
 ```
 
 ### Deploy Artifact to Nexus
